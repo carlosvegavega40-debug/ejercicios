@@ -1,13 +1,15 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/**
- *
- * @author Carlos Vega
- */
 public class ejercicio3 {
-    
+    public static void contarParesImpares(int[] arreglo) {
+        int pares = 0;
+        int impares = 0;       
+        for (int num : arreglo) {
+            if (num % 2 == 0) {
+                pares++;
+            } else {
+                impares++;
+            }
+        }
+        System.out.println("Cantidad de números pares: " + pares);
+        System.out.println("Cantidad de números impares: " + impares);
+    }
 }

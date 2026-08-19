@@ -1,13 +1,16 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/**
- *
- * @author Carlos Vega
- */
+import java.util.ArrayList;
 public class ejercicio2 {
-    
+     public static void separarParesImpares(int[] arreglo) {
+        ArrayList<Integer> pares = new ArrayList<>();
+        ArrayList<Integer> impares = new ArrayList<>();   
+        for (int num : arreglo) {
+            if (num % 2 == 0) {
+                pares.add(num);
+            } else {
+                impares.add(num);
+            }
+        }
+        System.out.println("Números pares: " + pares);
+        System.out.println("Números impares: " + impares);
+    }  
 }
