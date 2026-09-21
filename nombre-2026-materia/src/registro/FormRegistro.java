@@ -1,0 +1,114 @@
+package registro;
+
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JComponent;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
+
+/**
+ * Formulario "Guardar Datos": Nombre, Apellido, Edad, Ciudad y botones.
+ */
+public class FormRegistro extends JFrame {
+
+    private JLabel lblTitulo;
+    private JLabel lblNombre;
+    private JLabel lblApellido;
+    private JLabel lblEdad;
+    private JLabel lblCiudad;
+    private JTextField txtNombre;
+    private JTextField txtApellido;
+    private JTextField txtEdad;
+    private JComboBox<String> cboCiudad;
+    private JButton btnAgregar;
+    private JButton btnLimpiar;
+    private JButton btnSalir;
+
+    public FormRegistro() {
+        initComponents();
+        setLocationRelativeTo(null);
+    }
+
+    private void initComponents() {
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setTitle("Registro de estudiantes");
+        setResizable(false);
+
+        lblTitulo = new JLabel("Guardar Datos", SwingConstants.CENTER);
+        lblTitulo.setFont(new Font("Tahoma", Font.BOLD, 18));
+
+        lblNombre = new JLabel("Nombre");
+        lblApellido = new JLabel("Apellido");
+        lblEdad = new JLabel("Edad");
+        lblCiudad = new JLabel("Ciudad");
+
+        txtNombre = new JTextField(18);
+        txtApellido = new JTextField(18);
+        txtEdad = new JTextField(18);
+        cboCiudad = new JComboBox<>(new String[]{
+            "Seleccione...", "Tarija", "La Paz", "Cochabamba", "Santa Cruz",
+            "Sucre", "Oruro", "Potosí", "Trinidad", "Cobija"
+        });
+
+        btnAgregar = new JButton("Agregar");
+        btnLimpiar = new JButton("Limpiar");
+        btnSalir = new JButton("Salir");
+
+        JPanel panel = new JPanel(new GridBagLayout());
+        panel.setBorder(BorderFactory.createEmptyBorder(20, 30, 20, 30));
+
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(6, 6, 6, 6);
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.gridwidth = 2;
+        gbc.insets = new Insets(0, 6, 18, 6);
+        panel.add(lblTitulo, gbc);
+
+        agregarFila(panel, lblNombre, txtNombre, 1);
+        agregarFila(panel, lblApellido, txtApellido, 2);
+        agregarFila(panel, lblEdad, txtEdad, 3);
+        agregarFila(panel, lblCiudad, cboCiudad, 4);
+
+        JPanel panelBotones = new JPanel(new FlowLayout(FlowLayout.CENTER, 12, 0));
+        panelBotones.add(btnAgregar);
+        panelBotones.add(btnLimpiar);
+        panelBotones.add(btnSalir);
+        gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 5;
+        gbc.gridwidth = 2;
+        gbc.insets = new Insets(18, 6, 0, 6);
+        panel.add(panelBotones, gbc);
+
+        getContentPane().add(panel);
+        pack();
+    }
+
+    private void agregarFila(JPanel panel, JLabel etiqueta, JComponent campo, int fila) {
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(6, 6, 6, 6);
+        gbc.gridy = fila;
+        gbc.gridx = 0;
+        gbc.anchor = GridBagConstraints.EAST;
+        panel.add(etiqueta, gbc);
+        gbc.gridx = 1;
+        gbc.anchor = GridBagConstraints.WEST;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        panel.add(campo, gbc);
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> new FormRegistro().setVisible(true));
+    }
+}

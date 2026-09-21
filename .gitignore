@@ -1,0 +1,7 @@
+# NetBeans
+**/build/
+**/dist/
+**/nbproject/private/
+**/nbproject/build-impl.xml
+**/nbproject/genfiles.properties
+**/nbproject/*.xml.bak
