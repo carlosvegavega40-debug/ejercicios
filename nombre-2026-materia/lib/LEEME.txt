@@ -1,0 +1,5 @@
+Coloque aquí el conector JDBC de MySQL: mysql-connector-j-9.7.0.jar
+(descargar de https://downloads.mysql.com/archives/c-j/ -> Platform Independent -> ZIP).
+
+En NetBeans: clic derecho en Libraries -> Add JAR/Folder -> seleccionar el .jar
+y marcar "Copy to Libraries Folder".

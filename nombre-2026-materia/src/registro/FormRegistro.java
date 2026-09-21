@@ -5,12 +5,14 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.sql.SQLException;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
@@ -20,6 +22,8 @@ import javax.swing.SwingUtilities;
  * Formulario "Guardar Datos": Nombre, Apellido, Edad, Ciudad y botones.
  */
 public class FormRegistro extends JFrame {
+
+    private final Conexion conexion = new Conexion();
 
     private JLabel lblTitulo;
     private JLabel lblNombre;
@@ -37,6 +41,19 @@ public class FormRegistro extends JFrame {
     public FormRegistro() {
         initComponents();
         setLocationRelativeTo(null);
+        conectar();
+    }
+
+    /** Conecta a la base de datos y muestra el estado en el título de la ventana. */
+    private void conectar() {
+        try {
+            conexion.conectar();
+            setTitle("Registro de estudiantes - Conexión establecida");
+        } catch (ClassNotFoundException | SQLException e) {
+            setTitle("Registro de estudiantes - Sin conexión");
+            JOptionPane.showMessageDialog(this, "Error de conexión: " + e.getMessage(),
+                    "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     private void initComponents() {
