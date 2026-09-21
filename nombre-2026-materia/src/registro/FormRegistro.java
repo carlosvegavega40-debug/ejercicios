@@ -5,6 +5,10 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -108,6 +112,18 @@ public class FormRegistro extends JFrame {
         gbc.insets = new Insets(18, 6, 0, 6);
         panel.add(panelBotones, gbc);
 
+        btnAgregar.addActionListener(this::btnAgregarActionPerformed);
+        btnLimpiar.addActionListener(this::btnLimpiarActionPerformed);
+        btnSalir.addActionListener(this::btnSalirActionPerformed);
+
+        // Si cierran la ventana con la X también se cierra la base de datos
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                conexion.cerrar();
+            }
+        });
+
         getContentPane().add(panel);
         pack();
     }
@@ -123,6 +139,81 @@ public class FormRegistro extends JFrame {
         gbc.anchor = GridBagConstraints.WEST;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         panel.add(campo, gbc);
+    }
+
+    /** Guarda un estudiante en la tabla "estudiante". */
+    private void btnAgregarActionPerformed(ActionEvent evt) {
+        String nombre = txtNombre.getText().trim();
+        String apellido = txtApellido.getText().trim();
+        String textoEdad = txtEdad.getText().trim();
+
+        if (nombre.isEmpty() || apellido.isEmpty() || textoEdad.isEmpty()
+                || cboCiudad.getSelectedIndex() == 0) {
+            JOptionPane.showMessageDialog(this, "Complete todos los campos",
+                    "Aviso", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        int edad;
+        try {
+            edad = Integer.parseInt(textoEdad);
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "La edad debe ser un número entero",
+                    "Aviso", JOptionPane.WARNING_MESSAGE);
+            txtEdad.requestFocus();
+            return;
+        }
+        if (edad < 1 || edad > 120) {
+            JOptionPane.showMessageDialog(this, "La edad debe estar entre 1 y 120",
+                    "Aviso", JOptionPane.WARNING_MESSAGE);
+            txtEdad.requestFocus();
+            return;
+        }
+
+        String ciudad = (String) cboCiudad.getSelectedItem();
+
+        // Si la conexión se cerró o nunca se abrió, se intenta de nuevo
+        if (!conexion.estaConectado()) {
+            conectar();
+            if (!conexion.estaConectado()) {
+                return;
+            }
+        }
+
+        String sql = "INSERT INTO estudiante(nombre, apellido, edad, ciudad) VALUES(?,?,?,?)";
+        try (PreparedStatement pst = conexion.getConnection().prepareStatement(sql)) {
+            pst.setString(1, nombre);
+            pst.setString(2, apellido);
+            pst.setInt(3, edad);
+            pst.setString(4, ciudad);
+            int n = pst.executeUpdate();
+            if (n > 0) {
+                JOptionPane.showMessageDialog(this, "Dato guardado");
+                limpiar();
+            }
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(this, "No se pudo guardar: " + ex.getMessage(),
+                    "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private void btnLimpiarActionPerformed(ActionEvent evt) {
+        limpiar();
+    }
+
+    /** Cierra la conexión a la base de datos y sale del programa. */
+    private void btnSalirActionPerformed(ActionEvent evt) {
+        conexion.cerrar();
+        dispose();
+        System.exit(0);
+    }
+
+    private void limpiar() {
+        txtNombre.setText("");
+        txtApellido.setText("");
+        txtEdad.setText("");
+        cboCiudad.setSelectedIndex(0);
+        txtNombre.requestFocus();
     }
 
     public static void main(String[] args) {
