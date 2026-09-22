@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # NetBeans
 **/build/
 **/dist/
@@ -5,3 +6,8 @@
 **/nbproject/build-impl.xml
 **/nbproject/genfiles.properties
 **/nbproject/*.xml.bak
+=======
+/ejercicios_commit/build/
+/practica_propio/nbproject/private/
+/practica_propio/build/
+>>>>>>> 3408ef8021c293af04f1fc3b47b2e2b8df8a9aa3
